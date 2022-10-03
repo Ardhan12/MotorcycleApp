@@ -17,10 +17,9 @@ struct ContentView: View {
                     CustomDivider()
                     CarSection()
                     CustomDivider()
+                    CategoryView(title: "Quick Shortcut", showEdit: true, actionItems: QuickShortcut)
                     CustomDivider()
-                    CategoryView(title: "Quick Shortcut", showEdit: true)
-                    CustomDivider()
-                    CategoryView(title: "Recent Actions")
+                    CategoryView(title: "Recent Actions", actionItems: RecentAction)
                 }
                 .padding()
             }
@@ -162,28 +161,28 @@ struct CategoryView: View{
     
     var title: String
     var showEdit: Bool = false
+    var actionItems: [ActionItem]
     
     var body: some View{
         CategoryHeader(title: title, showEdit: showEdit)
         ScrollView(.horizontal, showsIndicators: false){
-            HStack{
-                ActionButton(icon: "bolt.fill", text: "Charging")
-                ActionButton(icon: "fanblades.fill", text: "Fan on")
-                ActionButton(icon: "playpause.fill", text: "Media Control")
-                ActionButton(icon: "bolt.car", text: "Close Charge Port")
+            HStack(alignment: .top){
+                ForEach(actionItems, id:\.self) { item in
+                    ActionButton(item: item)
+                }
             }
         }
     }
 }
 
 struct ActionButton: View{
-    var icon: String
-    var text: String
+    
+    var item: ActionItem
     
     var body: some View{
         VStack(alignment: .center){
-            GeneralButton(icon: icon)
-            Text(text)
+            GeneralButton(icon: item.icon)
+            Text(item.text)
                 .frame(width: 72)
                 .font(.system(size: 12, weight: .semibold, design: .default))
                 .multilineTextAlignment(.center)
@@ -197,3 +196,13 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+struct ActionItem: Hashable {
+    var icon: String
+    var text: String
+}
+
+let QuickShortcut: [ActionItem] = [
+ActionItem(icon: "bolt.fill", text: "Charging"), ActionItem(icon: "fanblades.fill", text: "Fan on"), ActionItem(icon: "playpause.fill", text: "Musik Control"), ActionItem(icon: "bolt.car", text: "Close Charge Port")]
+
+let RecentAction: [ActionItem] = [
+ActionItem(icon: "arrow.up.square", text: "Open Trunk"), ActionItem(icon: "fanblades", text: "Fan off"), ActionItem(icon: "person.fill.viewfinder", text: "Summon")]
