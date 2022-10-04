@@ -17,9 +17,11 @@ struct ContentView: View {
                     CustomDivider()
                     CarSection()
                     CustomDivider()
-                    CategoryView(title: "Quick Shortcut", showEdit: true, actionItems: QuickShortcut)
+//                    CategoryView(title: "Quick Shortcut", showEdit: true, actionItems: QuickShortcut)
+//                    CustomDivider()
+//                    CategoryView(title: "Recent Actions", actionItems: RecentAction)
                     CustomDivider()
-                    CategoryView(title: "Recent Actions", actionItems: RecentAction)
+                    AllSettings()
                 }
                 .padding()
             }
@@ -202,7 +204,41 @@ struct ActionItem: Hashable {
 }
 
 let QuickShortcut: [ActionItem] = [
-ActionItem(icon: "bolt.fill", text: "Charging"), ActionItem(icon: "fanblades.fill", text: "Fan on"), ActionItem(icon: "playpause.fill", text: "Musik Control"), ActionItem(icon: "bolt.car", text: "Close Charge Port")]
+ActionItem(icon: "bolt.fill", text: "Charging"), ActionItem(icon: "fanblades.fill", text: "Fan on"), ActionItem(icon: "playpause.fill", text: "Musik Controls"), ActionItem(icon: "bolt.car", text: "Close Charge Port")]
 
 let RecentAction: [ActionItem] = [
 ActionItem(icon: "arrow.up.square", text: "Open Trunk"), ActionItem(icon: "fanblades", text: "Fan off"), ActionItem(icon: "person.fill.viewfinder", text: "Summon")]
+
+
+struct AllSettings: View {
+    var body: some View{
+        CategoryHeader(title: "All Settings")
+        LazyVGrid(columns: [GridItem(.fixed(170))]){
+            SettingBlock(icon: "car.fill", title: "Controls")
+            SettingBlock(icon: "fanblades.fill", title: "Climate")
+            SettingBlock(icon: "location.fill", title: "Location")
+            SettingBlock(icon: "checkerboard.shield", title: "Security")
+            SettingBlock(icon: "sparkles", title: "Upgrades")
+        }
+    }
+}
+
+
+struct SettingBlock: View{
+    var icon: String
+    var title: String
+    var subtitile: String = ""
+    var hasSubtitle: Bool = false
+    
+    var body: some View{
+        HStack{
+            Image(systemName: icon)
+            VStack{
+                Text(title)
+                if hasSubtitle {
+                    Text(subtitile)
+                }
+            }
+        }
+    }
+}
